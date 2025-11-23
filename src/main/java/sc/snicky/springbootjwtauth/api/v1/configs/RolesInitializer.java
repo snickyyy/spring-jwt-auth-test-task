@@ -3,6 +3,8 @@ package sc.snicky.springbootjwtauth.api.v1.configs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import sc.snicky.springbootjwtauth.api.v1.domain.enums.ERole;
 import sc.snicky.springbootjwtauth.api.v1.domain.models.Role;
@@ -11,6 +13,7 @@ import sc.snicky.springbootjwtauth.api.v1.repositories.JpaRoleRepository;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class RolesInitializer implements CommandLineRunner {
     private final JpaRoleRepository jpaRoleRepository;
 
