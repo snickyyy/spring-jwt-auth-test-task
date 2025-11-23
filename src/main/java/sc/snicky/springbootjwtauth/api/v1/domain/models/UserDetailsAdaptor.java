@@ -31,7 +31,7 @@ public class UserDetailsAdaptor implements UserDetails {
                         .map(erole -> (GrantedAuthority) erole::name)
                         .toList())
                 .password(user.getPassword())
-                .username(user.getEmail())
+                .username(user.getUsername())
                 .build();
     }
 

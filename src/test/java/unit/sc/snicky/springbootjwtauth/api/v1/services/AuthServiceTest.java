@@ -18,7 +18,7 @@ import sc.snicky.springbootjwtauth.api.v1.domain.models.Role;
 import sc.snicky.springbootjwtauth.api.v1.domain.models.User;
 import sc.snicky.springbootjwtauth.api.v1.domain.types.NonProtectedToken;
 import sc.snicky.springbootjwtauth.api.v1.domain.types.ProtectedToken;
-import sc.snicky.springbootjwtauth.api.v1.exceptions.business.security.PasswordOrEmailIsInvalidException;
+import sc.snicky.springbootjwtauth.api.v1.exceptions.business.security.PasswordOrUsernameIsInvalidException;
 import sc.snicky.springbootjwtauth.api.v1.exceptions.business.users.UserAlreadyExistException;
 import sc.snicky.springbootjwtauth.api.v1.exceptions.business.users.UserNotFoundException;
 import sc.snicky.springbootjwtauth.api.v1.services.AccessTokenServiceImpl;
@@ -44,7 +44,7 @@ import static org.mockito.Mockito.when;
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {
-    private static final String TEST_EMAIL = "testuser@test.te";
+    private static final String TEST_EMAIL = "testuser";
     private static final String TEST_PASSWORD = "testpassword";
     private static final Long TEST_ACCESS_TOKEN_DURATION = 3600000L;
     private final Long TEST_REFRESH_TOKEN_DURATION = 9000000L;
@@ -88,7 +88,7 @@ public class AuthServiceTest {
         assertNotNull(tokenPair.accessToken());
         assertNotNull(tokenPair.refreshToken());
         assertDoesNotThrow(() -> accessTokenService.extractUserDetails(tokenPair.accessToken()));
-        assertEquals(buildUser().getEmail(), accessTokenService.extractUserDetails(tokenPair.accessToken()).getUsername());
+        assertEquals(buildUser().getUsername(), accessTokenService.extractUserDetails(tokenPair.accessToken()).getUsername());
 
         verify(userService).saveUser(any(), any(ERole.class));
         verify(refreshTokenService).generate(isNull(Integer.class));
@@ -107,7 +107,7 @@ public class AuthServiceTest {
     @Test
     void testLoginWithSuccess() {
         var user = buildUser();
-        when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
+        when(userService.getUserByUsername(TEST_EMAIL)).thenReturn(user);
         var token = buildToken(user);
         when(refreshTokenService.generate(user.getId())).thenReturn(token);
 
@@ -117,32 +117,32 @@ public class AuthServiceTest {
         assertNotNull(tokenPair.accessToken());
         assertNotNull(tokenPair.refreshToken());
         assertDoesNotThrow(() -> accessTokenService.extractUserDetails(tokenPair.accessToken()));
-        assertEquals(user.getEmail(), accessTokenService.extractUserDetails(tokenPair.accessToken()).getUsername());
+        assertEquals(user.getUsername(), accessTokenService.extractUserDetails(tokenPair.accessToken()).getUsername());
 
-        verify(userService).getUserByEmail(TEST_EMAIL);
+        verify(userService).getUserByUsername(TEST_EMAIL);
         verify(refreshTokenService).generate(user.getId());
     }
 
     @Test
     void testLoginWithInvalidPassword() {
         var user = buildUser();
-        when(userService.getUserByEmail(TEST_EMAIL)).thenReturn(user);
+        when(userService.getUserByUsername(TEST_EMAIL)).thenReturn(user);
 
-        assertThrows(PasswordOrEmailIsInvalidException.class,
+        assertThrows(PasswordOrUsernameIsInvalidException.class,
                 () -> authService.login(TEST_EMAIL, "wrongpassword"));
 
-        verify(userService).getUserByEmail(TEST_EMAIL);
+        verify(userService).getUserByUsername(TEST_EMAIL);
     }
 
     @Test
     void testLoginWithInvalidEmail() {
-        when(userService.getUserByEmail(TEST_EMAIL))
+        when(userService.getUserByUsername(TEST_EMAIL))
                 .thenThrow(UserNotFoundException.class);
 
-        assertThrows(PasswordOrEmailIsInvalidException.class,
+        assertThrows(PasswordOrUsernameIsInvalidException.class,
                 () -> authService.login(TEST_EMAIL, TEST_PASSWORD));
 
-        verify(userService).getUserByEmail(TEST_EMAIL);
+        verify(userService).getUserByUsername(TEST_EMAIL);
     }
 
     private RefreshTokenDetails buildToken(User user) {
@@ -158,7 +158,7 @@ public class AuthServiceTest {
 
     private User buildUser() {
         var user = User.builder()
-                .email(TEST_EMAIL)
+                .username(TEST_EMAIL)
                 .password(passwordEncoder.encode(TEST_PASSWORD))
                 .build();
         user.assignRole(Role.builder().name(ERole.USER).build());

@@ -45,7 +45,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> register(
             HttpServletResponse response, @Valid @RequestBody AuthRequest authRequest) {
 
-        var tokens = authService.register(authRequest.email(), authRequest.password());
+        var tokens = authService.register(authRequest.username(), authRequest.password());
         sessionService.setSessionToken(response, tokens.refreshToken());
 
         return buildAuthResponse(response, tokens, "User registered successfully");
@@ -65,7 +65,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(
             HttpServletResponse response, @Valid @RequestBody AuthRequest authRequest) {
 
-        var tokens = authService.login(authRequest.email(), authRequest.password());
+        var tokens = authService.login(authRequest.username(), authRequest.password());
         sessionService.setSessionToken(response, tokens.refreshToken());
 
         return buildAuthResponse(response, tokens, "User logged in successfully");

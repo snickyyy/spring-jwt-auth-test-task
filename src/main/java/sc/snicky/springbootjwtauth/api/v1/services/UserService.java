@@ -21,15 +21,15 @@ public class UserService {
     private final JpaRoleRepository jpaRoleRepository;
 
     /**
-     * Retrieves a user by their email address.
+     * Retrieves a user by their username address.
      *
-     * @param email the email address to search for; must not be {@code null}
-     * @return the {@link User} with the given email
-     * @throws UserNotFoundException if no user with the given email is found or the user is not active
+     * @param username the username address to search for; must not be {@code null}
+     * @return the {@link User} with the given username
+     * @throws UserNotFoundException if no user with the given username is found or the user is not active
      */
-    public User getUserByEmail(String email) {
-        return jpaUserRepository.findByEmailAndIsActiveTrue(email)
-                .orElseThrow(() -> new UserNotFoundException("User with email " + email + " not found"));
+    public User getUserByUsername(String username) {
+        return jpaUserRepository.findByUsernameAndIsActiveTrue(username)
+                .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
     }
 
     /**
@@ -49,15 +49,15 @@ public class UserService {
      * Saves a new user to the repository.
      *
      * @param user the {@link User} entity to be saved; must not be {@code null}
-     * @throws UserAlreadyExistException if a user with the same email already exists
+     * @throws UserAlreadyExistException if a user with the same username already exists
      */
     @Transactional
     public void saveUser(User user) {
         try {
             jpaUserRepository.save(user);
         } catch (DataIntegrityViolationException e) {
-            log.debug("User with email {} already exists", user.getEmail());
-            throw new UserAlreadyExistException("User with email " + user.getEmail() + " already exists");
+            log.debug("User with username {} already exists", user.getUsername());
+            throw new UserAlreadyExistException("User with username " + user.getUsername() + " already exists");
         }
     }
 
@@ -67,7 +67,7 @@ public class UserService {
      * @param user the {@link User} entity to be saved; must not be {@code null}
      * @param role the {@link ERole} to be assigned to the user; must not be {@code null}
      * @throws RoleNotFoundException if the specified role is not found
-     * @throws UserAlreadyExistException if a user with the same email already exists
+     * @throws UserAlreadyExistException if a user with the same username already exists
      */
     @Transactional
     public void saveUser(User user, ERole role) {
@@ -79,8 +79,8 @@ public class UserService {
                     }));
             jpaUserRepository.save(user);
         } catch (DataIntegrityViolationException e) {
-            log.debug("User with email {} already exists", user.getEmail());
-            throw new UserAlreadyExistException("User with email " + user.getEmail() + " already exists");
+            log.debug("User with username {} already exists", user.getUsername());
+            throw new UserAlreadyExistException("User with username " + user.getUsername() + " already exists");
         }
     }
 }

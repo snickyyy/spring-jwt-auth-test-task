@@ -30,15 +30,15 @@ import java.util.Set;
 @Entity(name = "users")
 public class User extends BaseEntity<Integer> implements Serializable {
     /**
-     * Max length for the email field.
+     * Max length for the username field.
      */
-    private static final int EMAIL_MAX_LENGTH = 100;
+    private static final int USERNAME_MAX_LENGTH = 40;
 
     /**
-     * User email address.
+     * User username address.
      */
-    @Column(name = "email", nullable = false, unique = true, length = EMAIL_MAX_LENGTH)
-    private String email;
+    @Column(name = "username", nullable = false, unique = true, length = USERNAME_MAX_LENGTH)
+    private String username;
 
     /**
      * User password hash.

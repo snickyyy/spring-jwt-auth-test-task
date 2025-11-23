@@ -1,18 +1,16 @@
 package sc.snicky.springbootjwtauth.api.v1.dtos.requests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record AuthRequest(
         // CHECKSTYLE:OFF
-        @Email
         @NotBlank
-        @Size(max = 100, message = "Email must be at most 100 characters long")
-        @Schema(description = "User email address", example = "user@example.com")
-        String email,
+        @Size(max = 40, message = "Username must be at most 40 characters long")
+        @Schema(description = "User username address", example = "user@example.com")
+        String username,
 
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$")
         @NotBlank

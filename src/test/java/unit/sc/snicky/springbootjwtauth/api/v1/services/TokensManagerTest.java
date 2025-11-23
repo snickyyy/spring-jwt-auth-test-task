@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 public class TokensManagerTest {
-    private static final String TEST_EMAIL = "testuser@test.te";
+    private static final String TEST_EMAIL = "testuser";
     private static final String TEST_PASSWORD = "testpassword";
     private static final Long TEST_REFRESH_TOKEN_DURATION = 9000000L;
 
@@ -80,7 +80,7 @@ public class TokensManagerTest {
 
     private User buildUser() {
         var user = User.builder()
-                .email(TEST_EMAIL)
+                .username(TEST_EMAIL)
                 .password(TEST_PASSWORD)
                 .build();
         user.assignRole(Role.builder().name(ERole.USER).build());

@@ -17,15 +17,15 @@ public class DefaultUserDetailsService implements UserDetailsService {
     private final JpaUserRepository jpaUserRepository;
 
     /**
-     * Loads user details by the given username (email).
+     * Loads user details by the given username (username).
      *
-     * @param username the username (email) to search for
+     * @param username the username (username) to search for
      * @return the UserDetails object for the user
      * @throws UsernameNotFoundException if the user is not found
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return UserDetailsAdaptor.ofUser(jpaUserRepository.findByEmailAndIsActiveTrue(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User with email " + username + " not found")));
+        return UserDetailsAdaptor.ofUser(jpaUserRepository.findByUsernameAndIsActiveTrue(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found")));
     }
 }

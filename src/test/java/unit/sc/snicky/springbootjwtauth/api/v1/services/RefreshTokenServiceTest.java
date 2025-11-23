@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 public class RefreshTokenServiceTest {
-    private static final String TEST_EMAIL = "testuser@test.te";
+    private static final String TEST_EMAIL = "testuser";
     private static final String TEST_PASSWORD = "testpassword";
     private final Long TEST_REFRESH_TOKEN_DURATION = 9000000L;
     private final String TEST_NON_PROTECTED_TOKEN = TokenUtils.generateToken();
@@ -144,7 +144,7 @@ public class RefreshTokenServiceTest {
 
         assertNotNull(result);
         assertNotEquals(TEST_PROTECTED_TOKEN.getToken(), result.getToken().getToken());
-        assertEquals(testUser.getEmail(), result.getUser().getEmail());
+        assertEquals(testUser.getUsername(), result.getUser().getUsername());
         assertEquals(oldToken.getExpiresAt(), result.getExpiry());
 
         verify(basicRefreshTokenRepository).delete(TEST_PROTECTED_TOKEN);
@@ -191,7 +191,7 @@ public class RefreshTokenServiceTest {
         Optional<RefreshTokenDetails> result = refreshTokenServiceTest.findByToken(TEST_NON_PROTECTED_TOKEN);
 
         assertTrue(result.isPresent());
-        assertEquals(testToken.getUser().getEmail(), result.get().getUser().getEmail());
+        assertEquals(testToken.getUser().getUsername(), result.get().getUser().getUsername());
 
         verify(basicRefreshTokenRepository).findByToken(TEST_PROTECTED_TOKEN);
     }
@@ -207,7 +207,7 @@ public class RefreshTokenServiceTest {
 
     private User buildUser() {
         var user = User.builder()
-                .email(TEST_EMAIL)
+                .username(TEST_EMAIL)
                 .password(TEST_PASSWORD)
                 .build();
         user.assignRole(Role.builder().name(ERole.USER).build());

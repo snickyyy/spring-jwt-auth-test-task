@@ -16,11 +16,13 @@ public interface JpaUserRepository extends JpaRepository<User, Integer> { //todo
      */
     Optional<User> findByIdAndIsActiveTrue(Integer id);
 
+    User getReferenceById(Long id);
+
     /**
-     * Find an active user by their email.
+     * Find an active user by their username.
      *
-     * @param email the email to search for
+     * @param username the username to search for
      * @return an {@link Optional} containing the found user, or empty if not found
      */
-    Optional<User> findByEmailAndIsActiveTrue(String email);
+    Optional<User> findByUsernameAndIsActiveTrue(String username);
 }
