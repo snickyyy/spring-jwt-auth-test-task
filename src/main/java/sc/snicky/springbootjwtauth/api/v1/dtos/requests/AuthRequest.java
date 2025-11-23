@@ -9,7 +9,7 @@ public record AuthRequest(
         // CHECKSTYLE:OFF
         @NotBlank
         @Size(max = 40, message = "Username must be at most 40 characters long")
-        @Schema(description = "User username address", example = "user@example.com")
+        @Schema(description = "User username", example = "username_123")
         String username,
 
         @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$")
