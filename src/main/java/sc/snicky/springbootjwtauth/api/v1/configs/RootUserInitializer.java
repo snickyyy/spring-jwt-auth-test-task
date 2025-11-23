@@ -14,7 +14,7 @@ import sc.snicky.springbootjwtauth.api.v1.domain.models.User;
 import sc.snicky.springbootjwtauth.api.v1.repositories.JpaRoleRepository;
 import sc.snicky.springbootjwtauth.api.v1.repositories.JpaUserRepository;
 
-@Profile("dev")
+//@Profile("dev")
 @Slf4j
 @Component
 @Order
