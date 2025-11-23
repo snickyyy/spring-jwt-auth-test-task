@@ -1,4 +1,4 @@
-package sc.snicky.springbootjwtauth.api.v1.admin.exceptions.business;
+package sc.snicky.springbootjwtauth.api.v1.admin.exceptions.business.users;
 
 import sc.snicky.springbootjwtauth.api.v1.exceptions.NotFoundException;
 
